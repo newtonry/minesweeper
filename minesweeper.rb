@@ -3,14 +3,11 @@
 require 'pp'
 
 class Minesweeper
-
   def initialize(grid_size)
     @board = Board.new(grid_size)
-
   end
 
   def play
-
     loop do
       @board.print_board
 
@@ -24,7 +21,6 @@ class Minesweeper
         puts "You have exploded!"
         break
       end
-
     end
   end
 
@@ -85,7 +81,6 @@ class Board
       end
 
       puts row_string
-
     end
   end
 
@@ -105,7 +100,6 @@ class Board
           @user_board[index] << :_
         end
       end
-
     end
   end
 
@@ -117,7 +111,6 @@ class Board
         next unless is_legit_coord?(new_coord)
 
         @board[new_coord[0]][new_coord[1]].num_close_mines += 1
-
       end
     end
   end
@@ -154,8 +147,6 @@ class Board
       move = [coord_mod[0] + coord[0], coord_mod[1] + coord[1]]
       make_move(move) if is_legit_coord?(move) and @board[move[0]][move[1]].selected == false
     end
-
-
   end
 
 
@@ -175,8 +166,6 @@ class Board
       end
     end
   end
-
-
 end
 
 
