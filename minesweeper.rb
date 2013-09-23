@@ -22,34 +22,54 @@ class Board
 
   def populate_tiles
     num_mines = (@grid_size ** 2) / 7
+    p num_mines
 
-    @board = Array.new(@grid_size) { Array.new(@grid_size, Tile.new(false)) }
+    @board = Array.new(@grid_size) { Array.new(@grid_size) { Tile.new() } }
+
+    mine_tiles = []
+
+    while mine_tiles.length < num_mines do
+
+      x = rand(@grid_size)
+      y = rand(@grid_size)
+
+      mine_tiles << @board[x][y] unless mine_tiles.include?(@board[x][y])
+      @board[x][y].is_mine = true
+    end
   end
 
   def print
-    #@user_board = @board
+    update_user_board
+    @user_board.each do |row|
+      p row
+    end
+  end
+
+  def update_user_board
     @user_board = []
     @board.each_with_index do |row, index|
       @user_board << []
       row.map do |tile|
-        @user_board[index] << tile.num_close_mines
+        if tile.selected == true and tile.num_close_mines != 0
+          @user_board[index] << tile.num_close_mines
+        elsif tile.selected == false
+          @user_board[index] << :*
+        elsif tile.selected == true and tile.num_close_mines == 0
+          @user_board[index] << :_
+        end
       end
     end
 
-    pp @user_board
-
   end
 
-  def compute
-
-  end
 end
 
 class Tile
-  attr_reader :num_close_mines
+  attr_reader :num_close_mines, :selected
+  attr_accessor :is_mine
 
-  def initialize (is_mine)
-    @is_mine = is_mine
+  def initialize
+    @is_mine = false
     @flagged = false
     @num_close_mines = 0
     @selected = false
@@ -58,6 +78,7 @@ class Tile
   def get_nieghbors
 
   end
+
 
 end
 
