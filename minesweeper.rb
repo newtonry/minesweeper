@@ -43,9 +43,12 @@ class Board
 
   end
 
-  def print
+  def print_board
     update_user_board
-    @user_board.each do |row|
+    print "   "
+    p (0..(@grid_size - 1)).to_a.join("   ")
+    @user_board.each_with_index do |row, index|
+      print "#{index} "
       p row
     end
   end
@@ -58,10 +61,8 @@ class Board
       row.map do |tile|
         if tile.selected == true and tile.num_close_mines != 0
           @user_board[index] << tile.num_close_mines
-        elsif tile.selected == false and tile.is_mine == true
-          @user_board[index] << "m"
         elsif tile.selected == false
-          @user_board[index] << tile.num_close_mines.to_s #:*
+          @user_board[index] << :*
         elsif tile.selected == true and tile.num_close_mines == 0
           @user_board[index] << :_
         end
@@ -111,6 +112,6 @@ end
 
 b = Board.new(9)
 
-b.print
+b.print_board
 
 # p tile1 = Tile.new(true)
