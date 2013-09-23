@@ -72,11 +72,20 @@ class Board
 
   def print_board
     update_user_board
-    print "   "
-    p (0..(@grid_size - 1)).to_a.join("   ")
+    print " "
+    p (0..(@grid_size - 1)).to_a.join(" ")
+
     @user_board.each_with_index do |row, index|
       print "#{index} "
-      p row
+
+      row_string = ""
+
+      row.each do |value|
+        row_string << "#{value} "
+      end
+
+      puts row_string
+
     end
   end
 
@@ -101,8 +110,6 @@ class Board
   end
 
   def count_mines
-
-
     @mine_tile_coords.each do |mine_coord|
       COORD_MODS.each do |coord_mod|
         new_coord = [coord_mod[0] + mine_coord[0], coord_mod[1] + mine_coord[1]]
@@ -145,7 +152,7 @@ class Board
   def spread (coord)
     COORD_MODS.each do |coord_mod|
       move = [coord_mod[0] + coord[0], coord_mod[1] + coord[1]]
-      make_move(move) if @board[move[0]][move[1]].selected == false and is_legit_coord?(move)
+      make_move(move) if is_legit_coord?(move) and @board[move[0]][move[1]].selected == false
     end
 
 
