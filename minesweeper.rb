@@ -4,6 +4,7 @@ class Minesweeper
   end
 
   def play
+    start_time = Time.now.to_i
     loop do
       @board.print_board
 
@@ -18,6 +19,8 @@ class Minesweeper
         break
       end
     end
+
+    puts "You took an eternally long #{Time.now.to_i - start_time} seconds."
   end
 
   def prompt_user_for_move
