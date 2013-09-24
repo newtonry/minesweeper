@@ -59,7 +59,7 @@ class Board
       x = rand(@grid_size)
       y = rand(@grid_size)
 
-      @mine_tile_coords << [x, y]
+      @mine_tile_coords << [x, y] unless @mine_tile_coords.include?([x, y])
       @board[x][y].is_mine = true
     end
 
@@ -96,6 +96,27 @@ class Board
           @user_board[index] << tile.num_close_mines
         elsif tile.selected == false
           @user_board[index] << :*
+        elsif tile.selected == true and tile.num_close_mines == 0
+          @user_board[index] << :_
+        end
+      end
+    end
+  end
+
+  def cheat_user_board
+    @user_board = []
+    @board.each_with_index do |row, index|
+      @user_board << []
+
+      row.map do |tile|
+        if tile.flagged
+          @user_board[index] << :F
+        elsif tile.selected == true and tile.num_close_mines != 0
+          @user_board[index] << tile.num_close_mines
+        elsif tile.selected == false and tile.is_mine == true
+          @user_board[index] << :b
+        elsif tile.selected == false and tile.is_mine == false
+          @user_board[index] << tile.num_close_mines
         elsif tile.selected == true and tile.num_close_mines == 0
           @user_board[index] << :_
         end
@@ -149,14 +170,14 @@ class Board
     end
   end
 
-
   def game_won?
-    @board.all? do |row|
-      row.all? do |tile|
-        tile.is_mine and tile.flagged
+    @board.each do |row|
+      row.each do |tile|
+        return false if tile.is_mine == true and tile.flagged == false
       end
     end
 
+    true
   end
 
   def game_lost?
@@ -192,6 +213,6 @@ end
 # p tile1 = Tile.new(true)
 
 
-ms = Minesweeper.new(9)
+ms = Minesweeper.new(3)
 ms.play
 
