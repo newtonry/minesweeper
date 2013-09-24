@@ -67,6 +67,7 @@ class Board
   end
 
   def print_board
+    system('clear')
     update_user_board
     print " "
     p (0..(@grid_size - 1)).to_a.join(" ")
@@ -213,6 +214,6 @@ end
 # p tile1 = Tile.new(true)
 
 
-ms = Minesweeper.new(3)
+ms = Minesweeper.new(9)
 ms.play
 
