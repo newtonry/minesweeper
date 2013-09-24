@@ -21,12 +21,33 @@ class Minesweeper
   end
 
   def prompt_user_for_move
-    print "Input move: (x y <f>) "
+    print "Input move: (x y <f>, save, load) "
     move_string = gets.chomp.split
-    move = []
-    move << move_string[0].to_i << move_string[1].to_i
-    move << move_string[2] if move_string[2]
-    move
+    if move_string[0] == "save"
+      save_game
+      puts "You're game has been saved."
+      prompt_user_for_move
+    elsif move_string[0] == "load"
+      load_game
+      @board.print_board
+      prompt_user_for_move
+    else
+      move = []
+      move << move_string[0].to_i << move_string[1].to_i
+      move << move_string[2] if move_string[2]
+      move
+    end
+  end
+
+  def save_game
+    f = File.open("saved_game.yaml", 'w+')
+    f.print(@board.to_yaml)
+  end
+
+
+  def load_game
+    f = File.open("saved_game.yaml")
+    @board = YAML::load(f)
   end
 end
 
